@@ -16,6 +16,11 @@ public class PreguntaVerderoFalso extends Pregunta{
 		super(textoPregunta, textoAclaratorio, nota);
 		this.respuesta = respuesta;
 	}
+
+	@Override
+	public String toString() {
+		return "PreguntaVerderoFalso [respuesta=" + respuesta + "]";
+	}
 	
 	
 	

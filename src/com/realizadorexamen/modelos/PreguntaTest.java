@@ -1,5 +1,5 @@
 package com.realizadorexamen.modelos;
 
-public class PreguntaTest {
+public class PreguntaTest extends Pregunta{
 
 }
