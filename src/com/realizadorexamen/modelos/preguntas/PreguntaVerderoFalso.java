@@ -1,4 +1,6 @@
-package com.realizadorexamen.modelos;
+package com.realizadorexamen.modelos.preguntas;
+
+import com.realizadorexamen.modelos.Pregunta;
 
 public class PreguntaVerderoFalso extends Pregunta{
 

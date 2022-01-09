@@ -1,6 +1,9 @@
-package com.realizadorexamen.modelos;
+package com.realizadorexamen.modelos.preguntas;
 
 import java.util.ArrayList;
+
+import com.realizadorexamen.modelos.Pregunta;
+import com.realizadorexamen.modelos.RespuestaTest;
 
 public class PreguntaOpciones extends Pregunta {
 	private int numeroRespuestas;
