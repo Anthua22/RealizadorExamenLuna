@@ -2,7 +2,7 @@ package com.realizadorexamen.modelos.preguntas;
 
 import com.realizadorexamen.modelos.Pregunta;
 
-public class PreguntaVerderoFalso extends Pregunta{
+public class PreguntaVerderoFalso extends PreguntaTest{
 
 	private boolean respuesta;
 
@@ -15,7 +15,7 @@ public class PreguntaVerderoFalso extends Pregunta{
 	}
 
 	public PreguntaVerderoFalso(String textoPregunta, String textoAclaratorio, int nota, boolean respuesta) {
-		super(textoPregunta, textoAclaratorio, nota);
+		super(textoPregunta, textoAclaratorio);
 		this.respuesta = respuesta;
 	}
 
