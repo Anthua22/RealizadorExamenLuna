@@ -1,8 +1,9 @@
 package com.realizadorexamen.modelos.preguntas;
 
+import com.realizadorexamen.modelos.IImpresion;
 import com.realizadorexamen.modelos.Pregunta;
 
-public class PreguntaTeorica extends Pregunta {
+public class PreguntaTeorica extends Pregunta implements IImpresion {
 	private String respuestaCorrecta;
 
 	@Override
@@ -21,5 +22,19 @@ public class PreguntaTeorica extends Pregunta {
 
 	public void setRespuestaCorrecta(String respuestaCorrecta) {
 		this.respuestaCorrecta = respuestaCorrecta;
+	}
+
+	@Override
+	public String imprimirSimple() {
+		String result = "";
+		return result.concat(super.getTextoPregunta()).concat("\n").concat("\t " + super.getTextoAclaratorio() + "\n");
+
+	}
+
+	@Override
+	public String imprimirCompleto() {
+		String result = "";
+		return result.concat(super.getTextoPregunta()).concat("\n").concat("\t " + super.getTextoAclaratorio() + "\n")
+				.concat(respuestaCorrecta);
 	}
 }
