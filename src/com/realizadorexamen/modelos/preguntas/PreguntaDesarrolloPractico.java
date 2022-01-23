@@ -6,7 +6,7 @@ import com.realizadorexamen.modelos.ApartadoPreguntaDesarrollo;
 import com.realizadorexamen.modelos.IImpresion;
 import com.realizadorexamen.modelos.Pregunta;
 
-public class PreguntaDesarrolloPractico extends Pregunta implements IImpresion {
+public class PreguntaDesarrolloPractico extends Pregunta {
 	private ArrayList<ApartadoPreguntaDesarrollo> apartados;
 	private ArrayList<Integer> porcentajes;
 
@@ -34,16 +34,6 @@ public class PreguntaDesarrolloPractico extends Pregunta implements IImpresion {
 		return "PreguntaDesarrolloPractico [apartados=" + apartados + "]";
 	}
 
-	@Override
-	public String imprimirSimple() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public String imprimirCompleto() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
