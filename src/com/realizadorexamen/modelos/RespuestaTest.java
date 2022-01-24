@@ -20,6 +20,9 @@ public class RespuestaTest {
 		this.respuesta = respuesta;
 		this.correcta = correcta;
 	}
+	public RespuestaTest() {
+		
+	}
 	@Override
 	public String toString() {
 		return "RespuestaTest [respuesta=" + respuesta + ", correcta=" + correcta + "]";

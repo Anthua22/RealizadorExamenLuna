@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.realizadorexamen.modelos.IImpresion;
 import com.realizadorexamen.modelos.Pregunta;
 
-public class PreguntaRellenar extends Pregunta implements IImpresion {
+public class PreguntaRellenar extends Pregunta {
 
 	private String fraseACompletar;
 
@@ -42,8 +42,8 @@ public class PreguntaRellenar extends Pregunta implements IImpresion {
 	@Override
 	public String imprimirSimple() {
 		String result = "";
-		return result.concat(super.getTextoPregunta()).concat("\n").concat("\t " + super.getTextoAclaratorio() + "\n")
-				.concat(fraseACompletar);
+		return result.concat(super.getTextoPregunta()).concat(".")
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n").concat(fraseACompletar);
 	}
 
 	@Override
@@ -51,8 +51,10 @@ public class PreguntaRellenar extends Pregunta implements IImpresion {
 		String result = "";
 		String frases = "";
 		this.frases.forEach(x -> frases.concat(x + "\n"));
-		return result.concat(super.getTextoPregunta()).concat("\n").concat("\t " + super.getTextoAclaratorio() + "\n")
+		return result.concat(super.getTextoPregunta()).concat(".")
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n")
 				.concat(fraseACompletar + "\n").concat(frases);
+
 	}
 
 }

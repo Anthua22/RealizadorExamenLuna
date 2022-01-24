@@ -8,17 +8,17 @@ import com.realizadorexamen.modelos.Pregunta;
 
 public class PreguntaDesarrolloPractico extends Pregunta {
 	private ArrayList<ApartadoPreguntaDesarrollo> apartados;
-	private ArrayList<Integer> porcentajes;
 
-	public PreguntaDesarrolloPractico(String textoPregunta, String textoAclaratorio, int nota) {
+	public PreguntaDesarrolloPractico(String textoPregunta, String textoAclaratorio, int nota,
+			ArrayList<ApartadoPreguntaDesarrollo> apartados) {
 		super(textoPregunta, textoAclaratorio, nota);
-		apartados = new ArrayList<>();
-		porcentajes = new ArrayList<>();
+		this.apartados = apartados;
+
 	}
 
-	public void addApartado(ApartadoPreguntaDesarrollo apartado, int porcentaje) {
+	public void addApartado(ApartadoPreguntaDesarrollo apartado) {
 		this.apartados.add(apartado);
-		this.porcentajes.add(porcentaje);
+
 	}
 
 	public ArrayList<ApartadoPreguntaDesarrollo> getApartados() {
@@ -34,6 +34,22 @@ public class PreguntaDesarrolloPractico extends Pregunta {
 		return "PreguntaDesarrolloPractico [apartados=" + apartados + "]";
 	}
 
+	@Override
+	public String imprimirSimple() {
+		String result = "";
+		String apartadosSt = "";
+		this.apartados.forEach(x -> apartadosSt.concat(x.getTextoApartado() + " (" + x.getPorcentajeNota() + ")\n"));
+		return result.concat(super.getTextoPregunta()).concat(".")
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n").concat(apartadosSt);
+	}
 
+	@Override
+	public String imprimirCompleto() {
+		String result = "";
+		String apartadosSt = "";
+		this.apartados.forEach(x -> apartadosSt.concat(x.getTextoApartado() + " (" + x.getPorcentajeNota() + ")\n"));
+		return result.concat(super.getTextoPregunta()).concat(".")
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n").concat(apartadosSt);
+	}
 
 }

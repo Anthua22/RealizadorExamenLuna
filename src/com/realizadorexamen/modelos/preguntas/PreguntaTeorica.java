@@ -3,7 +3,7 @@ package com.realizadorexamen.modelos.preguntas;
 import com.realizadorexamen.modelos.IImpresion;
 import com.realizadorexamen.modelos.Pregunta;
 
-public class PreguntaTeorica extends Pregunta implements IImpresion {
+public class PreguntaTeorica extends Pregunta {
 	private String respuestaCorrecta;
 
 	@Override
@@ -27,14 +27,15 @@ public class PreguntaTeorica extends Pregunta implements IImpresion {
 	@Override
 	public String imprimirSimple() {
 		String result = "";
-		return result.concat(super.getTextoPregunta()).concat("\n").concat("\t " + super.getTextoAclaratorio() + "\n");
+		return result.concat(super.getTextoPregunta()).concat(". ")
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)");
 
 	}
 
 	@Override
 	public String imprimirCompleto() {
 		String result = "";
-		return result.concat(super.getTextoPregunta()).concat("\n").concat("\t " + super.getTextoAclaratorio() + "\n")
-				.concat(respuestaCorrecta);
+		return result.concat(super.getTextoPregunta()).concat(".")
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)").concat(respuestaCorrecta);
 	}
 }
