@@ -57,14 +57,14 @@ public class PreguntaTest extends Pregunta {
 		String msj = "";
 
 		for (RespuestaTest y : this.opciones) {
-			msj = y.getRespuesta() + "\n";
+			msj += y.getRespuesta() + "\n";
 		}
 
 		// TODO Auto-generated method stub
 		return resta
 				? super.getTextoPregunta() + " " + super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n"
 						+ msj
-				: super.getTextoPregunta() + " (" + super.getNota() + ")\n"+ msj;
+				: super.getTextoPregunta() + " (" + super.getNota() + " puntos)\n"+ msj;
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class PreguntaTest extends Pregunta {
 			msj = y.getRespuesta() + "(" + y.isCorrecta() + ")\n";
 		}
 
-		return resta ? super.getTextoPregunta() + " " + super.getTextoAclaratorio() + " (" + super.getNota() + ")\n"+msj
+		return resta ? super.getTextoPregunta() + " " + super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n"+msj
 				: super.getTextoPregunta() + " (" + super.getNota() + ")\n"+msj;
 	}
 

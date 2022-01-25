@@ -28,10 +28,10 @@ public class PreguntaRellenar extends Pregunta {
 	}
 
 	public PreguntaRellenar(String textoPregunta, String textoAclaratorio, int nota, String fraseACompletar,
-			ArrayList<String> frase) {
+			ArrayList<String> frases) {
 		super(textoPregunta, textoAclaratorio, nota);
 		this.fraseACompletar = fraseACompletar;
-		this.frases = frase;
+		this.frases = frases;
 	}
 
 	@Override

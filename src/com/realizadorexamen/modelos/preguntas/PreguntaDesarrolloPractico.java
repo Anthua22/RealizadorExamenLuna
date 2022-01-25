@@ -38,18 +38,16 @@ public class PreguntaDesarrolloPractico extends Pregunta {
 	public String imprimirSimple() {
 		String result = "";
 		String apartadosSt = "";
-		this.apartados.forEach(x -> apartadosSt.concat(x.getTextoApartado() + " (" + x.getPorcentajeNota() + ")\n"));
+		for (ApartadoPreguntaDesarrollo x : this.apartados) {
+			apartadosSt += x.getTextoApartado() + " (" + x.getPorcentajeNota() + " puntos)\n";
+		}
 		return result.concat(super.getTextoPregunta()).concat(".")
 				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n").concat(apartadosSt);
 	}
 
 	@Override
 	public String imprimirCompleto() {
-		String result = "";
-		String apartadosSt = "";
-		this.apartados.forEach(x -> apartadosSt.concat(x.getTextoApartado() + " (" + x.getPorcentajeNota() + ")\n"));
-		return result.concat(super.getTextoPregunta()).concat(".")
-				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n").concat(apartadosSt);
+		return this.imprimirSimple();
 	}
 
 }
