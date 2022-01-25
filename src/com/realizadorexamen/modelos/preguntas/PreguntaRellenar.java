@@ -27,7 +27,7 @@ public class PreguntaRellenar extends Pregunta {
 		this.frases = frase;
 	}
 
-	public PreguntaRellenar(String textoPregunta, String textoAclaratorio, int nota, String fraseACompletar,
+	public PreguntaRellenar(String textoPregunta, String textoAclaratorio, float nota, String fraseACompletar,
 			ArrayList<String> frases) {
 		super(textoPregunta, textoAclaratorio, nota);
 		this.fraseACompletar = fraseACompletar;

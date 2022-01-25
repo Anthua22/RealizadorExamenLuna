@@ -9,7 +9,7 @@ import com.realizadorexamen.modelos.Pregunta;
 public class PreguntaDesarrolloPractico extends Pregunta {
 	private ArrayList<ApartadoPreguntaDesarrollo> apartados;
 
-	public PreguntaDesarrolloPractico(String textoPregunta, String textoAclaratorio, int nota,
+	public PreguntaDesarrolloPractico(String textoPregunta, String textoAclaratorio, float nota,
 			ArrayList<ApartadoPreguntaDesarrollo> apartados) {
 		super(textoPregunta, textoAclaratorio, nota);
 		this.apartados = apartados;
@@ -50,9 +50,15 @@ public class PreguntaDesarrolloPractico extends Pregunta {
 		return this.imprimirSimple();
 	}
 
-	public static boolean ckeckPuntosPropocion(int puntosTotal, int puntos) throws Exception {
+	public static boolean ckeckPuntosPropocion(float puntosTotal, float puntos) throws Exception {
 		if (puntosTotal != puntos)
-			throw new Exception("La suma de puntos de la preguntas no es igual a 10");
+			throw new Exception("La suma de puntos de los apartados no es igual a " + puntosTotal);
+		return true;
+	}
+
+	public static boolean ckeckPuntosExamenMixto(float puntosTotal) throws Exception {
+		if (puntosTotal != 4)
+			throw new Exception("La pregunta de tipo desarrollo tiene que valer 4 puntos");
 		return true;
 	}
 }

@@ -3,13 +3,13 @@ package com.realizadorexamen.modelos;
 public abstract class Pregunta implements IImpresion {
 	private String textoPregunta;
 	private String textoAclaratorio;
-	private int nota;
+	private float nota;
 
 	public Pregunta() {
 		super();
 	}
 
-	public Pregunta(String textoPregunta, String textoAclaratorio, int nota) {
+	public Pregunta(String textoPregunta, String textoAclaratorio, float nota) {
 		super();
 		this.textoPregunta = textoPregunta;
 		this.textoAclaratorio = textoAclaratorio;
@@ -32,7 +32,7 @@ public abstract class Pregunta implements IImpresion {
 		this.textoAclaratorio = textoAclaratorio;
 	}
 
-	public int getNota() {
+	public float getNota() {
 		return nota;
 	}
 

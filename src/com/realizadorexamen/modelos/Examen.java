@@ -164,7 +164,8 @@ public class Examen implements IImpresion {
 		}
 
 		if (this.preguntasRellenar != null && this.preguntasRellenar.size() > 0) {
-			examen += "Prengutas de tipo Desarrollo: \n";
+			examen += "Prengutas de tipo Rellenar"
+					+ ": \n";
 			for (PreguntaRellenar x : this.preguntasRellenar) {
 				examen += cont + ". " + x.imprimirSimple();
 				cont++;
@@ -189,7 +190,7 @@ public class Examen implements IImpresion {
 				+ ")\tConvocatoria:  " + this.conva + "\n";
 		int cont = 1;
 		if (this.preguntasTest != null && this.preguntasTest.size() > 0) {
-			examen += "Prengutas de tipo test: \n";
+			examen += "Preguntas de tipo test: \n";
 			for (PreguntaTest test : this.preguntasTest) {
 				examen += cont + ". " + test.imprimirCompleto();
 				cont++;
@@ -198,7 +199,7 @@ public class Examen implements IImpresion {
 		}
 
 		if (this.preguntasDesarrollo != null && this.preguntasDesarrollo.size() > 0) {
-			examen += "Prengutas de tipo Desarrollo: \n";
+			examen += "Preguntas de tipo Desarrollo: \n";
 			for (PreguntaDesarrolloPractico x : this.preguntasDesarrollo) {
 				examen += cont + ". " + x.imprimirCompleto();
 				cont++;
@@ -206,14 +207,14 @@ public class Examen implements IImpresion {
 		}
 
 		if (this.preguntasRellenar != null && this.preguntasRellenar.size() > 0) {
-			examen += "Prengutas de tipo Desarrollo: \n";
+			examen += "Preguntas de tipo Rellenar: \n";
 			for (PreguntaRellenar x : this.preguntasRellenar) {
 				examen += cont + ". " + x.imprimirCompleto();
 				cont++;
 			}
 		}
 		if (this.preguntasTeoricas != null && this.preguntasTeoricas.size() > 0) {
-			examen += "Prengutas tipo Teóricas: \n";
+			examen += "Preguntas tipo Teóricas: \n";
 			for (PreguntaTeorica x : this.preguntasTeoricas) {
 				examen += cont + ". " + x.imprimirCompleto();
 				cont++;

@@ -25,7 +25,6 @@ public class RealizadorExamen {
 
 	public static void main(String[] args) {
 		boolean terminado = false;
-
 		try {
 			do {
 				System.out.println("*************************************************");
@@ -78,8 +77,20 @@ public class RealizadorExamen {
 							examenesGuardados = new ArrayList<Examen>();
 						}
 						examen.ckeckPuntos();
-						examenesGuardados.add(examen);
-						Persistencia.guardar(examenesGuardados, fileExamenes);
+						System.out.println("Deseas ver el examen con las respuesta ?(y/n)");
+						boolean respuestas = scan.nextLine().equals("y");
+						if (respuestas) {
+							System.out.println(examen.imprimirCompleto());
+						} else {
+							System.out.println(examen.imprimirSimple());
+						}
+						System.out.println("Deseas guardar el examen?(y/n)");
+						boolean guardar = scan.nextLine().equals("y");
+						if (guardar) {
+							examenesGuardados.add(examen);
+							Persistencia.guardar(examenesGuardados, fileExamenes);
+						}
+
 					} else {
 						System.out.println("No existe la asignatura");
 					}
@@ -168,7 +179,7 @@ public class RealizadorExamen {
 		System.out.println("Escriba una aclaración a la pregunta anterior..");
 		String aclaracion = scan.nextLine();
 		System.out.println("Escriba los puntos que vale esta pregunta ...");
-		int nota = Integer.parseInt(scan.nextLine());
+		float nota = Float.parseFloat(scan.nextLine());
 
 		if (TipoPreguntas.Test.equals(tipo)) {
 			String fin = "";
@@ -218,21 +229,21 @@ public class RealizadorExamen {
 
 			int contador = 0;
 			String fin = "";
-			int puntosAcumuladosApartados = 0;
+			float puntosAcumuladosApartados = 0;
 			ArrayList<ApartadoPreguntaDesarrollo> apartados = new ArrayList();
 			while (!fin.toLowerCase().equals("n")) {
 				System.out.println("Escriba un apartado de la pregunta de tipo de desarrollo:");
 				String apartado = apartadosLetras[contador] + ") " + scan.nextLine();
 				System.out.println("Escriba los puntos que vale este apartado:");
-				int porcentaje = Integer.parseInt(scan.nextLine());
-				puntosAcumuladosApartados+=porcentaje;
+				float porcentaje = Float.parseFloat(scan.nextLine());
+				puntosAcumuladosApartados += porcentaje;
 				ApartadoPreguntaDesarrollo ap = new ApartadoPreguntaDesarrollo(apartado, porcentaje);
 				apartados.add(ap);
 				System.out.println("Deseas escribir más partados? (y/n)");
 				fin = scan.nextLine();
 				contador++;
 			}
-			
+
 			PreguntaDesarrolloPractico.ckeckPuntosPropocion(nota, puntosAcumuladosApartados);
 
 			x = new PreguntaDesarrolloPractico(pregunta, aclaracion, nota, apartados);
@@ -326,28 +337,41 @@ public class RealizadorExamen {
 				exa.setPreguntasRellenar(rellenar);
 
 			} else if (tipoPregunta == 5) {
-				int nPreguntas = 10;
 				ArrayList<PreguntaRellenar> rellenar = new ArrayList<PreguntaRellenar>();
 				ArrayList<PreguntaDesarrolloPractico> desarrollos = new ArrayList<PreguntaDesarrolloPractico>();
 				ArrayList<PreguntaTeorica> teoricas = new ArrayList<PreguntaTeorica>();
 				ArrayList<PreguntaTest> tests = new ArrayList<PreguntaTest>();
+				System.out.println("***********************");
+				System.out.println("Preguntas de desarrollo:");
+				System.out.println("************************");
+				List<Pregunta> preguntasDes = getPregutasExamen(TipoPreguntas.Desarrollo, 1);
+				int puntosDes = 0;
+				for (Pregunta p : preguntasDes) {
+					puntosDes += p.getNota();
+				}
+				
+				
 
+				desarrollos = getPreguntaToPreguntaDesarrolloPractico(preguntasDes);
+
+				PreguntaDesarrolloPractico.ckeckPuntosExamenMixto(puntosDes);
 				for (int i = 0; i < TipoPreguntas.values().length; i++) {
-//					List<Pregunta> preguntas = getPregutasExamen(TipoPreguntas.values()[i]);
-//					ArrayList<PreguntaRellenar> auxrellenar = getPreguntaToPreguntaRellenar(preguntas);
-//					ArrayList<PreguntaDesarrolloPractico> desarrollosAux = getPreguntaToPreguntaDesarrolloPractico(
-//							preguntas);
-//					ArrayList<PreguntaTeorica> teoricasAux = getPreguntaToPreguntaTeorica(preguntas);
-//					ArrayList<PreguntaTest> testsAux = getPreguntaToPreguntaTest(preguntas);
-//					if (auxrellenar.size() > 0) {
-//						rellenar = auxrellenar;
-//					} else if (desarrollosAux.size() > 0) {
-//						desarrollos = desarrollosAux;
-//					} else if (teoricasAux.size() > 0) {
-//						teoricas = teoricasAux;
-//					} else if (testsAux.size() > 0) {
-//						tests = testsAux;
-//					}
+					if (!TipoPreguntas.values()[i].equals(TipoPreguntas.Desarrollo)) {
+						System.out
+								.println("Cuántas preguntas de tipo " + TipoPreguntas.values()[i] + " deseas realizar?");
+						int numeroPreg = Integer.parseInt(scan.nextLine());
+						List<Pregunta> preguntas = getPregutasExamen(TipoPreguntas.values()[i], numeroPreg);
+						ArrayList<PreguntaRellenar> auxrellenar = getPreguntaToPreguntaRellenar(preguntas);
+						ArrayList<PreguntaTeorica> teoricasAux = getPreguntaToPreguntaTeorica(preguntas);
+						ArrayList<PreguntaTest> testsAux = getPreguntaToPreguntaTest(preguntas);
+						if (auxrellenar.size() > 0) {
+							rellenar = auxrellenar;
+						} else if (teoricasAux.size() > 0) {
+							teoricas = teoricasAux;
+						} else if (testsAux.size() > 0) {
+							tests = testsAux;
+						}
+					}
 				}
 
 				exa.setPreguntasDesarrollo(desarrollos);
@@ -356,7 +380,7 @@ public class RealizadorExamen {
 				exa.setPreguntasRellenar(rellenar);
 
 			} else {
-				System.err.println("Opci�n introducida no v�lida!");
+				System.err.println("Opción introducida no válida!");
 			}
 
 			return exa;
@@ -419,20 +443,12 @@ public class RealizadorExamen {
 
 	private static List<Pregunta> getPregutasExamen(TipoPreguntas tipo, int nPreguntas) throws Exception {
 		List<Pregunta> preguntas = new ArrayList<Pregunta>();
-		boolean termina = false;
 		for (int i = 0; i < nPreguntas; i++) {
 			System.out.println("Pregunta nº " + (i + 1) + ":");
 			Pregunta x = makePregunta(tipo);
 			preguntas.add(x);
 		}
 
-		while (!termina) {
-			Pregunta x = makePregunta(tipo);
-			preguntas.add(x);
-			System.out.println("Deseas añadir otra tipo de pregunta como esta?(y/n)");
-			termina = scan.nextLine().toLowerCase().equals("n");
-
-		}
 		return preguntas;
 	}
 

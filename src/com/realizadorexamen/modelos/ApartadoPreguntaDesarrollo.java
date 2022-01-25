@@ -2,7 +2,7 @@ package com.realizadorexamen.modelos;
 
 public class ApartadoPreguntaDesarrollo {
 	private String textoApartado;
-	private int porcentajeNota;
+	private float porcentajeNota;
 
 	public String getTextoApartado() {
 		return textoApartado;
@@ -12,15 +12,15 @@ public class ApartadoPreguntaDesarrollo {
 		this.textoApartado = textoApartado;
 	}
 
-	public int getPorcentajeNota() {
+	public float getPorcentajeNota() {
 		return porcentajeNota;
 	}
 
-	public void setPorcentajeNota(int porcentajeNota) {
+	public void setPorcentajeNota(float porcentajeNota) {
 		this.porcentajeNota = porcentajeNota;
 	}
 
-	public ApartadoPreguntaDesarrollo(String textoApartado, int porcentajeNota) {
+	public ApartadoPreguntaDesarrollo(String textoApartado, float porcentajeNota) {
 		super();
 		this.textoApartado = textoApartado;
 		this.porcentajeNota = porcentajeNota;

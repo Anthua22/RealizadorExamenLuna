@@ -11,7 +11,7 @@ public class PreguntaTeorica extends Pregunta {
 		return "PreguntaTeorica [respuestaCorrecta=" + respuestaCorrecta + "]";
 	}
 
-	public PreguntaTeorica(String textoPregunta, String textoAclaratorio, int nota, String respuestaCorrecta) {
+	public PreguntaTeorica(String textoPregunta, String textoAclaratorio, float nota, String respuestaCorrecta) {
 		super(textoPregunta, textoAclaratorio, nota);
 		this.respuestaCorrecta = respuestaCorrecta;
 	}
@@ -28,7 +28,7 @@ public class PreguntaTeorica extends Pregunta {
 	public String imprimirSimple() {
 		String result = "";
 		return result.concat(super.getTextoPregunta()).concat(". ")
-				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)+\n");
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)\n");
 
 	}
 

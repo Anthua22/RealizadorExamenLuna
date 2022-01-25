@@ -27,7 +27,7 @@ public class PreguntaTest extends Pregunta {
 		this.numeroRespuestas = numeroRespuestas;
 	}
 
-	public PreguntaTest(String textoPregunta, String textoAclaratorio, int nota, boolean resta,
+	public PreguntaTest(String textoPregunta, String textoAclaratorio, float nota, boolean resta,
 			ArrayList<RespuestaTest> opciones, int numeroRespuesta) {
 		super(textoPregunta, textoAclaratorio, nota);
 		this.resta = resta;
