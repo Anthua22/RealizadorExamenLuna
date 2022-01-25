@@ -224,4 +224,32 @@ public class Examen implements IImpresion {
 
 	}
 
+	public boolean ckeckPuntos() throws Exception {
+		int puntos = 0;
+		if (this.preguntasTest != null && this.preguntasTest.size() > 0) {
+			for (PreguntaTest test : this.preguntasTest) {
+				puntos += test.getNota();
+			}
+		}
+
+		if (this.preguntasDesarrollo != null && this.preguntasDesarrollo.size() > 0) {
+			for (PreguntaDesarrolloPractico x : this.preguntasDesarrollo) {
+				puntos+=x.getNota();
+			}
+		}
+
+		if (this.preguntasRellenar != null && this.preguntasRellenar.size() > 0) {
+			for (PreguntaRellenar x : this.preguntasRellenar) {
+				puntos+=x.getNota();
+			}
+		}
+		if (this.preguntasTeoricas != null && this.preguntasTeoricas.size() > 0) {
+			for (PreguntaTeorica x : this.preguntasTeoricas) {
+				puntos+=x.getNota();
+			}
+		}
+		if (puntos != 10)
+			throw new Exception("La suma de puntos de la preguntas del examen no es igual a 10");
+		return true;
+	}
 }

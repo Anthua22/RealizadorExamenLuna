@@ -50,4 +50,9 @@ public class PreguntaDesarrolloPractico extends Pregunta {
 		return this.imprimirSimple();
 	}
 
+	public static boolean ckeckPuntosPropocion(int puntosTotal, int puntos) throws Exception {
+		if (puntosTotal != puntos)
+			throw new Exception("La suma de puntos de la preguntas no es igual a 10");
+		return true;
+	}
 }

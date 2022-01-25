@@ -1,25 +1,15 @@
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
-import com.google.gson.Gson;
 import com.realizadorexamen.enums.Convocatoria;
 import com.realizadorexamen.enums.TipoPreguntas;
 import com.realizadorexamen.modelos.ApartadoPreguntaDesarrollo;
 import com.realizadorexamen.modelos.Asignatura;
 import com.realizadorexamen.modelos.Examen;
+import com.realizadorexamen.modelos.Persistencia;
 import com.realizadorexamen.modelos.Pregunta;
 import com.realizadorexamen.modelos.RespuestaTest;
 import com.realizadorexamen.modelos.preguntas.PreguntaDesarrolloPractico;
@@ -44,7 +34,7 @@ public class RealizadorExamen {
 				System.out.println("Escribe el número de algunas de las siguientes opciones: ");
 				System.out.println("1. Crear Pregunta\n2. Crear examen\n3. Ver exámenes guardados\n4. Salir");
 				int opcion = Integer.parseInt(scan.nextLine());
-				List<Asignatura> asig = getAsignaturas();
+				List<Asignatura> asig = Persistencia.getAsignaturas(fileAsignaturas);
 
 				switch (opcion) {
 				case 1:
@@ -68,7 +58,7 @@ public class RealizadorExamen {
 						x = makePregunta(TipoPreguntas.Rellenar);
 						checkSaveBefore(x, asig);
 					} else {
-						System.out.println("Opci�n no v�lida...");
+						System.out.println("Opción no válida...");
 					}
 
 					break;
@@ -83,19 +73,20 @@ public class RealizadorExamen {
 								examen.getPreguntasTest() == null ? new ArrayList<>() : examen.getPreguntasTest());
 						examen.setPreguntasDesarrollo(examen.getPreguntasDesarrollo() == null ? new ArrayList<>()
 								: examen.getPreguntasDesarrollo());
-						List<Examen> examenesGuardados = getExamenes();
+						List<Examen> examenesGuardados = Persistencia.getExamenes(fileExamenes);
 						if (examenesGuardados == null) {
 							examenesGuardados = new ArrayList<Examen>();
 						}
+						examen.ckeckPuntos();
 						examenesGuardados.add(examen);
-						guardarDatos(examenesGuardados, fileExamenes);
+						Persistencia.guardar(examenesGuardados, fileExamenes);
 					} else {
 						System.out.println("No existe la asignatura");
 					}
 
 					break;
 				case 3:
-					List<Examen> examenesGuardadosLectura = getExamenes();
+					List<Examen> examenesGuardadosLectura = Persistencia.getExamenes(fileExamenes);
 					int conta = 0;
 					for (Examen ex : examenesGuardadosLectura) {
 						conta++;
@@ -163,37 +154,13 @@ public class RealizadorExamen {
 			if (existe == null) {
 				System.out.println("No existe el c�digo introducido");
 			} else {
-				guardarDatos(asig, fileAsignaturas);
+				Persistencia.guardar(asig, fileAsignaturas);
 			}
 		}
 
 	}
 
-	public static void guardarDatos(Object ob, String fileName) {
-		try {
-			Gson gson = new Gson();
-			File file = new File(fileName);
-			FileOutputStream fos = new FileOutputStream(file);
-			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			Writer writer = new BufferedWriter(osw);
-			// Write data using a String variable
-			String jugadoresJson = gson.toJson(ob);
-
-			writer.write(jugadoresJson);
-
-			writer.close();
-			osw.close();
-			fos.close();
-
-		} catch (Exception e) {
-			System.err.println("Ha ocurrido un error guardando los datos...");
-		} finally {
-			System.out.println("Datos guardados correctamente.");
-		}
-
-	}
-
-	private static Pregunta makePregunta(TipoPreguntas tipo) {
+	private static Pregunta makePregunta(TipoPreguntas tipo) throws Exception {
 		Pregunta x = null;
 		char[] apartadosLetras = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
 		System.out.println("Escriba la pregunta:...");
@@ -211,7 +178,7 @@ public class RealizadorExamen {
 			System.out.println("Escriba cuantas respuestas hay: ");
 			int nrespr = Integer.parseInt(scan.nextLine());
 			while (!fin.toLowerCase().equals("n")) {
-				System.out.println("Escriba una opci�n: ");
+				System.out.println("Escriba una opción: ");
 
 				String opcion = apartadosLetras[cont] + ") " + scan.nextLine();
 				System.out.println("Escriba si esta solucion es correcta: (y/n)");
@@ -251,18 +218,22 @@ public class RealizadorExamen {
 
 			int contador = 0;
 			String fin = "";
+			int puntosAcumuladosApartados = 0;
 			ArrayList<ApartadoPreguntaDesarrollo> apartados = new ArrayList();
 			while (!fin.toLowerCase().equals("n")) {
 				System.out.println("Escriba un apartado de la pregunta de tipo de desarrollo:");
 				String apartado = apartadosLetras[contador] + ") " + scan.nextLine();
 				System.out.println("Escriba los puntos que vale este apartado:");
 				int porcentaje = Integer.parseInt(scan.nextLine());
+				puntosAcumuladosApartados+=porcentaje;
 				ApartadoPreguntaDesarrollo ap = new ApartadoPreguntaDesarrollo(apartado, porcentaje);
 				apartados.add(ap);
 				System.out.println("Deseas escribir más partados? (y/n)");
 				fin = scan.nextLine();
 				contador++;
 			}
+			
+			PreguntaDesarrolloPractico.ckeckPuntosPropocion(nota, puntosAcumuladosApartados);
 
 			x = new PreguntaDesarrolloPractico(pregunta, aclaracion, nota, apartados);
 
@@ -275,38 +246,7 @@ public class RealizadorExamen {
 		return x;
 	}
 
-	private static List<Asignatura> getAsignaturas() throws IOException {
-		List<Asignatura> result = new ArrayList<Asignatura>();
-		;
-		try {
-
-			File file = new File(fileAsignaturas);
-			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
-			Gson gson = new Gson();
-			String linea;
-			String contenido = "";
-			while ((linea = br.readLine()) != null) {
-				contenido += linea;
-			}
-			br.close();
-			fr.close();
-			Asignatura[] asig = gson.fromJson(contenido, Asignatura[].class);
-
-			result = Arrays.asList(asig);
-
-		} catch (Exception e) {
-			Asignatura asig1 = new Asignatura("POO", "Programación Orientada a Objetos");
-			Asignatura asig2 = new Asignatura("DAM", "Desarrollo de aplicaciones para dispositivos móviles");
-			result.add(asig1);
-			result.add(asig2);
-			guardarDatos(result, fileAsignaturas);
-
-		}
-		return result;
-	}
-
-	private static Examen makeEamen(List<Asignatura> asig) {
+	private static Examen makeEamen(List<Asignatura> asig) throws Exception {
 		System.out.println("*************************************************");
 		asig.forEach(asi -> System.out.println("código: " + asi.getCodigo() + " nombre: " + asi.getTitulo()));
 		System.out.println("*************************************************");
@@ -356,7 +296,7 @@ public class RealizadorExamen {
 				System.out.println("Escriba el número de preguntas que va a tener: ");
 				int nPreguntas = Integer.parseInt(scan.nextLine());
 				exa.setnPreguntas(nPreguntas);
-				List<Pregunta> preguntas = getPregutasExamen(tipo);
+				List<Pregunta> preguntas = getPregutasExamen(tipo, nPreguntas);
 				ArrayList<PreguntaTest> tests = getPreguntaToPreguntaTest(preguntas);
 				exa.setPreguntasTest(tests);
 			} else if (tipoPregunta == 2) {
@@ -364,7 +304,7 @@ public class RealizadorExamen {
 				System.out.println("Escriba el número de preguntas que va a tener: ");
 				int nPreguntas = Integer.parseInt(scan.nextLine());
 				exa.setnPreguntas(nPreguntas);
-				List<Pregunta> preguntas = getPregutasExamen(tipo);
+				List<Pregunta> preguntas = getPregutasExamen(tipo, nPreguntas);
 				ArrayList<PreguntaTeorica> teoricas = getPreguntaToPreguntaTeorica(preguntas);
 				exa.setPreguntasTeoricas(teoricas);
 
@@ -373,7 +313,7 @@ public class RealizadorExamen {
 				System.out.println("Escriba el número de preguntas que va a tener: ");
 				int nPreguntas = Integer.parseInt(scan.nextLine());
 				exa.setnPreguntas(nPreguntas);
-				List<Pregunta> preguntas = getPregutasExamen(tipo);
+				List<Pregunta> preguntas = getPregutasExamen(tipo, nPreguntas);
 				ArrayList<PreguntaDesarrolloPractico> desarrollos = getPreguntaToPreguntaDesarrolloPractico(preguntas);
 				exa.setPreguntasDesarrollo(desarrollos);
 			} else if (tipoPregunta == 4) {
@@ -381,7 +321,7 @@ public class RealizadorExamen {
 				int nPreguntas = Integer.parseInt(scan.nextLine());
 				exa.setnPreguntas(nPreguntas);
 				tipo = TipoPreguntas.Rellenar;
-				List<Pregunta> preguntas = getPregutasExamen(tipo);
+				List<Pregunta> preguntas = getPregutasExamen(tipo, nPreguntas);
 				ArrayList<PreguntaRellenar> rellenar = getPreguntaToPreguntaRellenar(preguntas);
 				exa.setPreguntasRellenar(rellenar);
 
@@ -393,21 +333,21 @@ public class RealizadorExamen {
 				ArrayList<PreguntaTest> tests = new ArrayList<PreguntaTest>();
 
 				for (int i = 0; i < TipoPreguntas.values().length; i++) {
-					List<Pregunta> preguntas = getPregutasExamen(TipoPreguntas.values()[i]);
-					ArrayList<PreguntaRellenar> auxrellenar = getPreguntaToPreguntaRellenar(preguntas);
-					ArrayList<PreguntaDesarrolloPractico> desarrollosAux = getPreguntaToPreguntaDesarrolloPractico(
-							preguntas);
-					ArrayList<PreguntaTeorica> teoricasAux = getPreguntaToPreguntaTeorica(preguntas);
-					ArrayList<PreguntaTest> testsAux = getPreguntaToPreguntaTest(preguntas);
-					if (auxrellenar.size() > 0) {
-						rellenar = auxrellenar;
-					} else if (desarrollosAux.size() > 0) {
-						desarrollos = desarrollosAux;
-					} else if (teoricasAux.size() > 0) {
-						teoricas = teoricasAux;
-					} else if (testsAux.size() > 0) {
-						tests = testsAux;
-					}
+//					List<Pregunta> preguntas = getPregutasExamen(TipoPreguntas.values()[i]);
+//					ArrayList<PreguntaRellenar> auxrellenar = getPreguntaToPreguntaRellenar(preguntas);
+//					ArrayList<PreguntaDesarrolloPractico> desarrollosAux = getPreguntaToPreguntaDesarrolloPractico(
+//							preguntas);
+//					ArrayList<PreguntaTeorica> teoricasAux = getPreguntaToPreguntaTeorica(preguntas);
+//					ArrayList<PreguntaTest> testsAux = getPreguntaToPreguntaTest(preguntas);
+//					if (auxrellenar.size() > 0) {
+//						rellenar = auxrellenar;
+//					} else if (desarrollosAux.size() > 0) {
+//						desarrollos = desarrollosAux;
+//					} else if (teoricasAux.size() > 0) {
+//						teoricas = teoricasAux;
+//					} else if (testsAux.size() > 0) {
+//						tests = testsAux;
+//					}
 				}
 
 				exa.setPreguntasDesarrollo(desarrollos);
@@ -477,9 +417,14 @@ public class RealizadorExamen {
 		return result;
 	}
 
-	private static List<Pregunta> getPregutasExamen(TipoPreguntas tipo) {
+	private static List<Pregunta> getPregutasExamen(TipoPreguntas tipo, int nPreguntas) throws Exception {
 		List<Pregunta> preguntas = new ArrayList<Pregunta>();
 		boolean termina = false;
+		for (int i = 0; i < nPreguntas; i++) {
+			System.out.println("Pregunta nº " + (i + 1) + ":");
+			Pregunta x = makePregunta(tipo);
+			preguntas.add(x);
+		}
 
 		while (!termina) {
 			Pregunta x = makePregunta(tipo);
@@ -491,31 +436,4 @@ public class RealizadorExamen {
 		return preguntas;
 	}
 
-	private static ArrayList<Examen> getExamenes() {
-		ArrayList<Examen> result = new ArrayList<Examen>();
-		try {
-			File file = new File(fileExamenes);
-			FileReader fr = new FileReader(file);
-			BufferedReader br = new BufferedReader(fr);
-			Gson gson = new Gson();
-			String linea;
-			String contenido = "";
-			while ((linea = br.readLine()) != null) {
-				contenido += linea;
-			}
-
-			Examen[] exas = gson.fromJson(contenido, Examen[].class);
-			for (Examen x : exas) {
-				result.add(x);
-			}
-			fr.close();
-			br.close();
-
-		} catch (FileNotFoundException e) {
-
-		} catch (Exception ex) {
-			System.err.println("Ha ocurrido un error guardando los datos...: " + ex.getMessage());
-		}
-		return result;
-	}
 }

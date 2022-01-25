@@ -28,7 +28,7 @@ public class PreguntaTeorica extends Pregunta {
 	public String imprimirSimple() {
 		String result = "";
 		return result.concat(super.getTextoPregunta()).concat(". ")
-				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)");
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)+\n");
 
 	}
 
@@ -36,6 +36,7 @@ public class PreguntaTeorica extends Pregunta {
 	public String imprimirCompleto() {
 		String result = "";
 		return result.concat(super.getTextoPregunta()).concat(".")
-				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)").concat(respuestaCorrecta);
+				.concat(super.getTextoAclaratorio() + " (" + super.getNota() + " puntos)")
+				.concat("\n Respuesta: " + respuestaCorrecta + "\n");
 	}
 }
