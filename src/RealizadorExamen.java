@@ -96,6 +96,18 @@ public class RealizadorExamen {
 					break;
 				case 3:
 					List<Examen> examenesGuardadosLectura = getExamenes();
+					int conta = 0;
+					for (Examen ex : examenesGuardadosLectura) {
+						conta++;
+						System.out.println(conta + ". " + ex);
+					}
+					System.out.println("Escriba el número del examen que quiere ver");
+					int n = Integer.parseInt(scan.nextLine());
+					System.out.println("Quieres ver el examen con las respuestas?(y/n)");
+					boolean resp = scan.nextLine().toLowerCase().equals("y");
+					System.out.println(resp ? examenesGuardadosLectura.get(n - 1).imprimirCompleto()
+							: examenesGuardadosLectura.get(n - 1).imprimirSimple());
+
 					break;
 				default:
 					System.out.println("Hasta Luego");
@@ -328,7 +340,7 @@ public class RealizadorExamen {
 				convo = Convocatoria.Diciembre;
 				break;
 			default:
-				System.out.println("Opci�n introducida incorrecta..");
+				System.out.println("Opción introducida incorrecta..");
 				break;
 			}
 
@@ -341,27 +353,40 @@ public class RealizadorExamen {
 			TipoPreguntas tipo = null;
 			if (tipoPregunta == 1) {
 				tipo = TipoPreguntas.Test;
+				System.out.println("Escriba el número de preguntas que va a tener: ");
+				int nPreguntas = Integer.parseInt(scan.nextLine());
+				exa.setnPreguntas(nPreguntas);
 				List<Pregunta> preguntas = getPregutasExamen(tipo);
 				ArrayList<PreguntaTest> tests = getPreguntaToPreguntaTest(preguntas);
 				exa.setPreguntasTest(tests);
 			} else if (tipoPregunta == 2) {
 				tipo = TipoPreguntas.Teoria;
+				System.out.println("Escriba el número de preguntas que va a tener: ");
+				int nPreguntas = Integer.parseInt(scan.nextLine());
+				exa.setnPreguntas(nPreguntas);
 				List<Pregunta> preguntas = getPregutasExamen(tipo);
 				ArrayList<PreguntaTeorica> teoricas = getPreguntaToPreguntaTeorica(preguntas);
 				exa.setPreguntasTeoricas(teoricas);
 
 			} else if (tipoPregunta == 3) {
 				tipo = TipoPreguntas.Desarrollo;
+				System.out.println("Escriba el número de preguntas que va a tener: ");
+				int nPreguntas = Integer.parseInt(scan.nextLine());
+				exa.setnPreguntas(nPreguntas);
 				List<Pregunta> preguntas = getPregutasExamen(tipo);
 				ArrayList<PreguntaDesarrolloPractico> desarrollos = getPreguntaToPreguntaDesarrolloPractico(preguntas);
 				exa.setPreguntasDesarrollo(desarrollos);
 			} else if (tipoPregunta == 4) {
+				System.out.println("Escriba el número de preguntas que va a tener: ");
+				int nPreguntas = Integer.parseInt(scan.nextLine());
+				exa.setnPreguntas(nPreguntas);
 				tipo = TipoPreguntas.Rellenar;
 				List<Pregunta> preguntas = getPregutasExamen(tipo);
 				ArrayList<PreguntaRellenar> rellenar = getPreguntaToPreguntaRellenar(preguntas);
 				exa.setPreguntasRellenar(rellenar);
 
 			} else if (tipoPregunta == 5) {
+				int nPreguntas = 10;
 				ArrayList<PreguntaRellenar> rellenar = new ArrayList<PreguntaRellenar>();
 				ArrayList<PreguntaDesarrolloPractico> desarrollos = new ArrayList<PreguntaDesarrolloPractico>();
 				ArrayList<PreguntaTeorica> teoricas = new ArrayList<PreguntaTeorica>();

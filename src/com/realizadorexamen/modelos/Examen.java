@@ -1,8 +1,8 @@
 package com.realizadorexamen.modelos;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.realizadorexamen.enums.Convocatoria;
 import com.realizadorexamen.modelos.preguntas.PreguntaDesarrolloPractico;
@@ -19,6 +19,23 @@ public class Examen implements IImpresion {
 	private ArrayList<PreguntaDesarrolloPractico> preguntasDesarrollo;
 	private ArrayList<PreguntaTest> preguntasTest;
 	private ArrayList<PreguntaRellenar> preguntasRellenar;
+	private int nPreguntas;
+
+	public Date getFechaRealizacion() {
+		return fechaRealizacion;
+	}
+
+	public void setFechaRealizacion(Date fechaRealizacion) {
+		this.fechaRealizacion = fechaRealizacion;
+	}
+
+	public int getnPreguntas() {
+		return nPreguntas;
+	}
+
+	public void setnPreguntas(int nPreguntas) {
+		this.nPreguntas = nPreguntas;
+	}
 
 	private String curso;
 
@@ -41,6 +58,7 @@ public class Examen implements IImpresion {
 		this.asignatura = asignatura;
 		this.conva = conva;
 		this.curso = curso;
+
 	}
 
 	public Date getFechaRealiacion() {
@@ -77,10 +95,16 @@ public class Examen implements IImpresion {
 
 	@Override
 	public String toString() {
-		return "Examen [fechaRealiacion=" + fechaRealizacion + ", realizadoPor=" + realizadoPor + ", asignatura="
-				+ asignatura + ", conva=" + conva + ", preguntasTeoricas=" + preguntasTeoricas
-				+ ", preguntasDesarrollo=" + preguntasDesarrollo + ", preguntasTest=" + preguntasTest
-				+ ", preguntasRellenar=" + preguntasRellenar + ", curso=" + curso + "]";
+		String exa = "";
+		SimpleDateFormat objSDF = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		exa += objSDF.format(fechaRealizacion) + " - ";
+		exa += this.realizadoPor + " - ";
+		exa += this.getAsignatura().getTitulo() + " - ";
+		exa += this.conva + " - ";
+		exa += this.curso + " - ";
+		exa += this.nPreguntas + " preguntas";
+
+		return exa;
 	}
 
 	public ArrayList<PreguntaTeorica> getPreguntasTeoricas() {
@@ -117,14 +141,87 @@ public class Examen implements IImpresion {
 
 	@Override
 	public String imprimirSimple() {
-		// TODO Auto-generated method stub
-		return null;
+		String examen = "";
+		examen = this.asignatura.getTitulo() + " - " + this.asignatura.getCodigo() + "\nCurso: " + this.curso
+				+ "\nRealizado por: " + this.realizadoPor + " (" + this.fechaRealizacion.toString()
+				+ ")\tConvocatoria:  " + this.conva + "\n";
+		int cont = 1;
+		if (this.preguntasTest != null && this.preguntasTest.size() > 0) {
+			examen += "Prengutas de tipo test: \n";
+			for (PreguntaTest test : this.preguntasTest) {
+				examen += cont + ". " + test.imprimirSimple();
+				cont++;
+			}
+
+		}
+
+		if (this.preguntasDesarrollo != null && this.preguntasDesarrollo.size() > 0) {
+			examen += "Prengutas de tipo Desarrollo: \n";
+			for (PreguntaDesarrolloPractico x : this.preguntasDesarrollo) {
+				examen += cont + ". " + x.imprimirSimple();
+				cont++;
+			}
+		}
+
+		if (this.preguntasRellenar != null && this.preguntasRellenar.size() > 0) {
+			examen += "Prengutas de tipo Desarrollo: \n";
+			for (PreguntaRellenar x : this.preguntasRellenar) {
+				examen += cont + ". " + x.imprimirSimple();
+				cont++;
+			}
+		}
+		if (this.preguntasTeoricas != null && this.preguntasTeoricas.size() > 0) {
+			examen += "Prengutas tipo Teóricas: \n";
+			for (PreguntaTeorica x : this.preguntasTeoricas) {
+				examen += cont + ". " + x.imprimirSimple();
+				cont++;
+			}
+		}
+
+		return examen;
 	}
 
 	@Override
 	public String imprimirCompleto() {
-		// TODO Auto-generated method stub
-		return null;
+		String examen = "";
+		examen = this.asignatura.getTitulo() + " - " + this.asignatura.getCodigo() + "\nCurso: " + this.curso
+				+ "\nRealizado por: " + this.realizadoPor + " (" + this.fechaRealizacion.toString()
+				+ ")\tConvocatoria:  " + this.conva + "\n";
+		int cont = 1;
+		if (this.preguntasTest != null && this.preguntasTest.size() > 0) {
+			examen += "Prengutas de tipo test: \n";
+			for (PreguntaTest test : this.preguntasTest) {
+				examen += cont + ". " + test.imprimirCompleto();
+				cont++;
+			}
+
+		}
+
+		if (this.preguntasDesarrollo != null && this.preguntasDesarrollo.size() > 0) {
+			examen += "Prengutas de tipo Desarrollo: \n";
+			for (PreguntaDesarrolloPractico x : this.preguntasDesarrollo) {
+				examen += cont + ". " + x.imprimirCompleto();
+				cont++;
+			}
+		}
+
+		if (this.preguntasRellenar != null && this.preguntasRellenar.size() > 0) {
+			examen += "Prengutas de tipo Desarrollo: \n";
+			for (PreguntaRellenar x : this.preguntasRellenar) {
+				examen += cont + ". " + x.imprimirCompleto();
+				cont++;
+			}
+		}
+		if (this.preguntasTeoricas != null && this.preguntasTeoricas.size() > 0) {
+			examen += "Prengutas tipo Teóricas: \n";
+			for (PreguntaTeorica x : this.preguntasTeoricas) {
+				examen += cont + ". " + x.imprimirCompleto();
+				cont++;
+			}
+		}
+
+		return examen;
+
 	}
 
 }
